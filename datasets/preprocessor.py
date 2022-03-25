@@ -38,14 +38,25 @@ def build_from_path(hparams, input_dirs, mel_dir, linear_dir, wav_dir, n_jobs=12
 			sentence_index = ''
 			sentence_pinyin = ''
 
-			for line in lines:
-				if line[0].isdigit():
-					sentence_index = line[:6]
-				else:
-					sentence_pinyin = line.strip()
+			use_yue_data = True
+			if use_yue_data:
+				for line in lines:
+					sentence_index = line[:6] # 鏀瑰姩浠ヤ笅涓よ
+					sentence_pinyin = line[6:].strip()
 					wav_path = os.path.join(input_dir, 'Wave', '%s.wav' % sentence_index)
-					futures.append(executor.submit(partial(_process_utterance, mel_dir, linear_dir, wav_dir, sentence_index, wav_path, sentence_pinyin, hparams)))
+					futures.append(executor.submit(
+						partial(_process_utterance, mel_dir, linear_dir, wav_dir, sentence_index, wav_path,
+								sentence_pinyin, hparams)))
 					index = index + 1
+			else:
+				for line in lines:
+					if line[0].isdigit():
+						sentence_index = line[:6]
+					else:
+						sentence_pinyin = line.strip()
+						wav_path = os.path.join(input_dir, 'Wave', '%s.wav' % sentence_index)
+						futures.append(executor.submit(partial(_process_utterance, mel_dir, linear_dir, wav_dir, sentence_index, wav_path, sentence_pinyin, hparams)))
+						index = index + 1
 	return [future.result() for future in tqdm(futures) if future.result() is not None]
 
 
