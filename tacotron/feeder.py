@@ -9,7 +9,7 @@ from infolog import log
 from sklearn.model_selection import train_test_split
 from tacotron.utils.text import text_to_sequence
 
-_batches_per_group = 32  # number of batches (64)
+_batches_per_group = 64  # number of batches (64)
 
 class Feeder:
 	"""
