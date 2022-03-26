@@ -239,7 +239,7 @@ hparams = tf.contrib.training.HParams(
 	tacotron_data_random_state = 1234, #random state for train test split repeatability
 
 	#performance parameters
-	tacotron_swap_with_cpu = False, #Whether to use cpu as support to gpu for decoder computation (Not recommended: may cause major slowdowns! Only use when critical!)
+	tacotron_swap_with_cpu = True, #Whether to use cpu as support to gpu for decoder computation (Not recommended: may cause major slowdowns! Only use when critical!)
 
 	#train/test split ratios, mini-batches sizes
 	tacotron_batch_size = 32, #number of training samples on each training steps
