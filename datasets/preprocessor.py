@@ -41,7 +41,7 @@ def build_from_path(hparams, input_dirs, mel_dir, linear_dir, wav_dir, n_jobs=12
 			use_yue_data = True
 			if use_yue_data:
 				for line in lines:
-					sentence_index = line[:6] # 鏀瑰姩浠ヤ笅涓よ
+					sentence_index = line[:6]
 					sentence_pinyin = line[6:].strip()
 					wav_path = os.path.join(input_dir, 'Wave', '%s.wav' % sentence_index)
 					futures.append(executor.submit(
