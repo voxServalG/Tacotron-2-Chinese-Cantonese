@@ -103,7 +103,7 @@ def main():
 	parser.add_argument('--mode', default='synthesis', help='mode for synthesis of tacotron after training')
 	parser.add_argument('--GTA', default='True', help='Ground truth aligned synthesis, defaults to True, only considered in Tacotron synthesis mode')
 	parser.add_argument('--restore', type=bool, default=True, help='Set this to False to do a fresh training')
-	parser.add_argument('--summary_interval', type=int, default=250,
+	parser.add_argument('--summary_interval', type=int, default=100,
 		help='Steps between running summary ops')
 	parser.add_argument('--embedding_interval', type=int, default=5000,
 		help='Steps between updating embeddings projection visualization')

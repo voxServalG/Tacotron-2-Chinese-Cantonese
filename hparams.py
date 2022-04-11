@@ -33,7 +33,7 @@ hparams = tf.contrib.training.HParams(
 
 	#Hardware setup: Default supposes user has only one GPU: "/gpu:0" (Both Tacotron and WaveNet can be trained on multi-GPU: data parallelization)
 	#Synthesis also uses the following hardware parameters for multi-GPU parallel synthesis.
-	tacotron_num_gpus = 2, #Determines the number of gpus in use for Tacotron training.
+	tacotron_num_gpus = 1, #Determines the number of gpus in use for Tacotron training.
 	wavenet_num_gpus = 1, #Determines the number of gpus in use for WaveNet training.
 	split_on_cpu = True, #Determines whether to split data on CPU or on first GPU. This is automatically True when more than 1 GPU is used. 
 		#(Recommend: False on slow CPUs/Disks, True otherwise for small speed boost)
@@ -172,8 +172,9 @@ hparams = tf.contrib.training.HParams(
 	mask_encoder = True, #whether to mask encoder padding while computing attention. Set to True for better prosody but slower convergence.
 	mask_decoder = False, #Whether to use loss mask for padded sequences (if False, <stop_token> loss function will not be weighted, else recommended pos_weight = 20)
 	cross_entropy_pos_weight = 1, #Use class weights to reduce the stop token classes imbalance (by adding more penalty on False Negatives (FN)) (1 = disabled)
-	predict_linear = True, #Whether to add a post-processing network to the Tacotron to predict linear spectrograms (True mode Not tested!!)
+	# predict_linear = True, #Whether to add a post-processing network to the Tacotron to predict linear spectrograms (True mode Not tested!!)
 	###########################################################################################################################################
+	predict_linear = False,
 
 	#Wavenet
 	# Input type:
@@ -239,10 +240,10 @@ hparams = tf.contrib.training.HParams(
 	tacotron_data_random_state = 1234, #random state for train test split repeatability
 
 	#performance parameters
-	tacotron_swap_with_cpu = True, #Whether to use cpu as support to gpu for decoder computation (Not recommended: may cause major slowdowns! Only use when critical!)
+	tacotron_swap_with_cpu = False, #Whether to use cpu as support to gpu for decoder computation (Not recommended: may cause major slowdowns! Only use when critical!)
 
 	#train/test split ratios, mini-batches sizes
-	tacotron_batch_size = 16, #number of training samples on each training steps
+	tacotron_batch_size = 8, #number of training samples on each training steps
 	#Tacotron Batch synthesis supports ~16x the training batch size (no gradients during testing). 
 	#Training Tacotron with unmasked paddings makes it aware of them, which makes synthesis times different from training. We thus recommend masking the encoder.
 	tacotron_synthesis_batch_size = 1, #DO NOT MAKE THIS BIGGER THAN 1 IF YOU DIDN'T TRAIN TACOTRON WITH "mask_encoder=True"!!
@@ -377,7 +378,14 @@ hparams = tf.contrib.training.HParams(
 
 	)
 
+
 def hparams_debug_string():
 	values = hparams.values()
 	hp = ['  %s: %s' % (name, values[name]) for name in sorted(values) if name != 'sentences']
 	return 'Hyperparameters:\n' + '\n'.join(hp)
+
+
+
+if __name__ == '__main__':
+	a = hparams
+	print(a)
